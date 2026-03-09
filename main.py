@@ -27,15 +27,26 @@ def on_live(streamer):
 def on_offline(streamer):
     print(streamer.name,"went OFFLINE")
 
+def on_raid(from_streamer,to_streamer):
+    print("Raid:",from_streamer,"→",to_streamer)
+
 def main():
     config=load_config()
-
-    chat=TwitchChat(config)
-    chat.connect()
     
     events=EventManager()
     events.on("stream_live",on_live)
     events.on("stream_offline",on_offline)
+    events.on("raid",on_raid)
+
+    chat=TwitchChat(config,events)
+    chat.connect()
+
+    for s in config["streamers"]:
+        if s.enabled:
+            chat.join(s.name)
+
+    chat.start()
+
     try:
         monitor_streamers(config,events)
     except KeyboardInterrupt:
