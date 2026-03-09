@@ -1,7 +1,7 @@
 import json
 
 CONFIG_FILE="config.json"
-from twitch_api import is_stream_live
+from monitor import monitor_streamers
 
 def load_config():
     with open(CONFIG_FILE,"r") as f:return json.load(f)
@@ -11,9 +11,7 @@ def save_config(config):
 
 def main():
     config=load_config()
-    for streamer in config["streamers"]:
-        live=is_stream_live(config,streamer)
-        print(streamer,"LIVE" if live else "offline")
+    monitor_streamers(config)
 
 if __name__=="__main__":
     main()
