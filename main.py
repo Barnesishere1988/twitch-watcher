@@ -11,7 +11,10 @@ def save_config(config):
 
 def main():
     config=load_config()
-    monitor_streamers(config)
+    try:
+        monitor_streamers(config)
+    except KeyboardInterrupt:
+        print("\nProgram stopped")
 
 if __name__=="__main__":
     main()

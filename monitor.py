@@ -4,6 +4,7 @@ from twitch_api import is_stream_live
 def monitor_streamers(config):
     streamers=config["streamers"]
     status={s:False for s in streamers}
+    print("Monitoring started")
     while True:
         for s in streamers:
             live=is_stream_live(config,s)
