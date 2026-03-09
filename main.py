@@ -28,7 +28,24 @@ def on_offline(streamer):
     print(streamer.name,"went OFFLINE")
 
 def on_raid(from_streamer,to_streamer):
-    print("Raid:",from_streamer,"→",to_streamer)
+
+    print("Raid dtected:",from_streamer,"→",to_streamer)
+
+    print("\nOptions:")
+    print("1 Continue watching")
+    print("2 Close stream")
+    print("3 Add to watchlist")
+
+    choice=input("Select option: ")
+
+    if choice=="1":
+        switch_stream(to_streamer,True)
+
+    elif choice=="2":
+        print("Raid ignored")
+
+    elif choice=="3":
+        print("Adding",to_streamer,"to watchlist")
 
 def main():
     config=load_config()
