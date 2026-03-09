@@ -12,11 +12,11 @@ def save_config(config):
     with open(CONFIG_FILE,"w") as f:json.dump(config,f,indent=2)
 
 def on_live(streamer):
-    print(streamer,"went LIVE")
-    open_stream(streamer)
+    print(streamer["name"],"went LIVE")
+    open_stream(streamer["name"],streamer["muted"])
 
 def on_offline(streamer):
-    print(streamer,"went OFFLINE")
+    print(streamer["name"],"went OFFLINE")
 
 def main():
     config=load_config()
