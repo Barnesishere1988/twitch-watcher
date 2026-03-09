@@ -3,6 +3,7 @@ from monitor import monitor_streamers
 from events import EventManager
 from player import open_stream
 from streamer import Streamer
+from chat import TwitchChat
 
 CONFIG_FILE="config.json"
 
@@ -28,6 +29,10 @@ def on_offline(streamer):
 
 def main():
     config=load_config()
+
+    chat=TwitchChat(config)
+    chat.connect()
+    
     events=EventManager()
     events.on("stream_live",on_live)
     events.on("stream_offline",on_offline)
