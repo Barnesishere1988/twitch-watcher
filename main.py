@@ -1,7 +1,7 @@
 import json
 from monitor import monitor_streamers
 from events import EventManager
-from player import open_stream
+from player import open_stream,switch_stream
 from streamer import Streamer
 from chat import TwitchChat
 
@@ -16,6 +16,25 @@ def save_config(config):
     data=dict(config)
     data["streamers"]=[s.to_dict() for s in config["streamers"]]
     with open(CONFIG_FILE,"w") as f:json.dump(data,f,indent=2)
+
+def add_streamer(config,name):
+
+    for s in config["streamers"]:
+        if s.name.lower()==name.lower():
+            print(name,"already in watchlist")
+            return
+        
+    print("Adding",name,"to watchlist")
+
+    streamer=Streamer({
+        "name":name,
+        "muted":True,
+        "auto_open":False,
+        "enabled":True
+    })
+
+    config["streamers"].append(streamer)
+    save_config(config)
 
 def on_live(streamer):
     print(streamer.name,"went LIVE")
@@ -45,9 +64,10 @@ def on_raid(from_streamer,to_streamer):
         print("Raid ignored")
 
     elif choice=="3":
-        print("Adding",to_streamer,"to watchlist")
+        add_streamer(config,to_streamer)
 
 def main():
+    global config
     config=load_config()
     
     events=EventManager()
