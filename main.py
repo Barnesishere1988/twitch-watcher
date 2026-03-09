@@ -1,6 +1,7 @@
 import json
 from monitor import monitor_streamers
 from events import EventManager
+from player import open_stream
 
 CONFIG_FILE="config.json"
 
@@ -12,6 +13,7 @@ def save_config(config):
 
 def on_live(streamer):
     print(streamer,"went LIVE")
+    open_stream(streamer)
 
 def on_offline(streamer):
     print(streamer,"went OFFLINE")
