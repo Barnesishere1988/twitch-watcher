@@ -4,6 +4,7 @@ from events import EventManager
 from player import open_stream,switch_stream
 from streamer import Streamer
 from chat import TwitchChat
+from pubsub import TwitchPubSub
 
 CONFIG_FILE="config.json"
 
@@ -35,6 +36,9 @@ def add_streamer(config,name):
 
     config["streamers"].append(streamer)
     save_config(config)
+
+def on_points(channel):
+    print("Channel points event from",channel)
 
 def on_live(streamer):
     print(streamer.name,"went LIVE")
@@ -74,15 +78,21 @@ def main():
     events.on("stream_live",on_live)
     events.on("stream_offline",on_offline)
     events.on("raid",on_raid)
+    events.on("points_bonus",on_points)
 
     chat=TwitchChat(config,events)
     chat.connect()
+
+    channels=[s.name for s in config["streamers"] if s.enabled]
 
     for s in config["streamers"]:
         if s.enabled:
             chat.join(s.name)
 
     chat.start()
+
+    pubsub=TwitchPubSub(config,events)
+    pubsub.start(channels)
 
     try:
         monitor_streamers(config,events)
