@@ -1,3 +1,9 @@
 {
-    "streamers":["Chaos1699","LurielAzari"]
+"client_id":"",
+"client_secret":"",
+"access_token":"",
+"streamers":[
+"Chaos1699",
+"LurielAzari"
+]
 }
